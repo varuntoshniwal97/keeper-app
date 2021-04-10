@@ -35,12 +35,14 @@ function App() {
     }
   ]);
 
-  useEffect(async () => {
-    const res = await fetchNotes();
-    console.log(res)
-    setNotes(res.data.data)
-  },[])
-  
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetchNotes();
+      console.log(res)
+      setNotes(res.data.data)
+    }
+  }, [])
+
   ////add note////
   async function addNote(newNote) {
 
@@ -79,7 +81,7 @@ function App() {
         }
       );
     });
-    console.log("nk",id)
+    console.log("nk", id)
     editNoteAction(id, editNote)
   }
 
@@ -106,7 +108,7 @@ function App() {
     console.log(userss, id);
     const index = userss.findIndex(user => user.id === id);
     console.log(index)
-    if(index > -1) {
+    if (index > -1) {
       userss[index].contributor = !userss[index].contributor;
     }
     console.log(userss)
@@ -117,6 +119,7 @@ function App() {
 
   return (
     <div>
+      <Header />
       <CreateNote onAdd={addNote} />
       {notes.map((noteItem, index) => {
         if (isEditable && noteItem.id === editIndex) {
@@ -157,7 +160,7 @@ function App() {
                 ))}
               </DialogContent>
               <DialogActions>
-                <Button onClick={() => {}} color="primary">
+                <Button onClick={() => { }} color="primary">
                   Add
                 </Button>
               </DialogActions>

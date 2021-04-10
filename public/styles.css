@@ -13,6 +13,9 @@ body {
 }
 
 header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #eebd38;
   margin: auto -16px;
   padding: 16px 32px;
@@ -23,6 +26,14 @@ header h1 {
   color: #fff;
   font-family: "McLaren", cursive;
   font-weight: 200;
+}
+
+header h6 {
+  color: #fff;
+  font-family: "McLaren", cursive;
+  font-weight: 200;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 footer {
@@ -126,6 +137,10 @@ form.edit-note textarea {
   display: flex;
   align-items: center;
   min-width: 300px;
+}
+
+.link {
+  text-decoration: none;
 }
 
 

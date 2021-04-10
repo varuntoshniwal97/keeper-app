@@ -58,3 +58,33 @@ export async function deleteNote(id) {
     }
 }
 
+export async function login(data) {
+    try {
+     let url = "/login";
+     const response = await apiClient({
+      url: url,
+      method: "POST",
+      data: data
+     });
+   
+     return response;
+    } catch (error) {
+     throw error;
+    }
+}
+
+export async function signUp(data) {
+    try {
+     let url = "/register";
+     const response = await apiClient({
+      url: url,
+      method: "POST",
+      data: data
+     });
+   
+     return response;
+    } catch (error) {
+     throw error;
+    }
+}
+
