@@ -117,7 +117,6 @@ function App() {
 
   return (
     <div>
-      <Header />
       <CreateNote onAdd={addNote} />
       {notes.map((noteItem, index) => {
         if (isEditable && noteItem.id === editIndex) {
