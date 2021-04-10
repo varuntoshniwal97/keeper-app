@@ -71,11 +71,14 @@ return (
         rows={3}
         // rows={isExpanded ? 3 : 1}
       />
-      <Zoom in={isExpanded}>
-        <Fab onClick={submitNote}>
+             <Fab onClick={submitNote}>
           <AddIcon />
         </Fab>
-      </Zoom>
+        {/* <Zoom in={isExpanded}>
+          <Fab onClick={submitNote}>
+            <AddIcon />
+          </Fab>
+        </Zoom> */}
     </form>
   </div>
 );

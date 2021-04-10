@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
@@ -7,6 +7,10 @@ import EditNote from "./EditNote";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import { createNote } from "../actions/createNote"
+import { fetchNotes } from "../actions/fetchNotes"
+import { editNote as editNoteAction } from "../actions/editNote"
+import { deleteNote as deleteNoteAction } from "../actions/deleteNote"
 // import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Checkbox from '@material-ui/core/Checkbox';
@@ -30,22 +34,32 @@ function App() {
       contributor: false
     }
   ]);
+
+  useEffect(async () => {
+    const res = await fetchNotes();
+    console.log(res)
+    setNotes(res.data.data)
+  },[])
   
   ////add note////
-  function addNote(newNote) {
-    setNotes((prevNotes) => {
-      return [...prevNotes, newNote];
-    });
+  async function addNote(newNote) {
 
+    const response = await createNote(newNote);
+    console.log(response)
+    setNotes((prevNotes) => {
+      return [...prevNotes, response.data.data];
+    });
   }
 
   ////delete note////
-  function deleteNote(id) {
+  async function deleteNote(id) {
     setNotes(prevNotes => {
       return prevNotes.filter((noteItem, index) => {
-        return index !== id;
+        return noteItem.id !== id;
       })
     })
+
+    await deleteNoteAction(id)
   }
 
   function handleEditChange(id) {
@@ -58,13 +72,15 @@ function App() {
     setNotes((prevNotes) => {
       return prevNotes.map(
         (note, index) => {
-          if (index === id) {
+          if (note.id === id) {
             return editNote
           }
           return note
         }
       );
     });
+    console.log("nk",id)
+    editNoteAction(id, editNote)
   }
 
   function onMenuClick(id, event) {
@@ -104,14 +120,14 @@ function App() {
       <Header />
       <CreateNote onAdd={addNote} />
       {notes.map((noteItem, index) => {
-        if (isEditable && index === editIndex) {
-          return <EditNote id={index} title={noteItem.title} content={noteItem.content} onAdd={editNote} />
+        if (isEditable && noteItem.id === editIndex) {
+          return <EditNote id={noteItem.id} title={noteItem.title} content={noteItem.content} onAdd={editNote} />
         }
         return (
           <div>
             <Note
               key={index}
-              id={index}
+              id={noteItem.id}
               title={noteItem.title}
               content={noteItem.content}
               onDelete={deleteNote}
