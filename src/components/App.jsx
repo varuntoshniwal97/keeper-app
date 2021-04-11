@@ -5,17 +5,19 @@ import Note from "./Note";
 import CreateNote from "./CreateNote";
 import EditNote from "./EditNote";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
+// import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import { createNote } from "../actions/createNote"
 import { fetchNotes } from "../actions/fetchNotes"
 import { fetchUsersForNote } from "../actions/fetchUsersForNote"
 import { editNote as editNoteAction } from "../actions/editNote"
-import { deleteNote as deleteNoteAction } from "../actions/deleteNote"
+import { deleteNote as deleteNoteAction } from "../actions/deleteNote";
+import { createPermission } from "../actions/createPermission";
+import { deletePermission } from "../actions/deletePermission";
 // import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Checkbox from '@material-ui/core/Checkbox';
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -89,30 +91,33 @@ function App() {
     setMenuAnchor(null);
   }
 
-  async function handleDialogBox(id,type) {
-    if (openDialogBox) {
-      setShareType("");
-    } else {
-      setShareType(type)
-    }
+  async function handleDialogBox(type) {
+    setShareType(type)
     setOpenDialogBox(!openDialogBox);
-    console.log(id)
     const res = await fetchUsersForNote(concernedNoteId)
     setUsers(res.data.data)
-    console.log(res)
   }
 
-  function selectUsers(id) {
-    console.log(shareType )
+  async function selectUsers(id) {
     const userss = users;
     const index = userss.findIndex(user => user.id === id);
     if (index > -1) {
-      userss[index].permission = !userss[index].contributor;
+      if (userss[index].permission) {
+        userss[index].permission = null;
+        await deletePermission(userss[index].permissionId);
+      } else {
+        userss[index].permission = shareType === "contributor" ? "CONTRIBUTOR" : "READER";
+        const params = {
+          noteId: concernedNoteId,
+          userId: userss[index].id,
+          permission: userss[index].permission
+        }
+        await createPermission(params);
+      }
     }
-    setUsers(userss)
+    console.log("users", userss[index]);
+    setUsers([...userss]);
   }
-
-
 
   return (
     <div>
@@ -124,7 +129,6 @@ function App() {
         }
         return (
           <div>
-            <p>{concernedNoteId}</p>
             <Note
               key={index}
               id={noteItem.id}
@@ -150,19 +154,14 @@ function App() {
                   <div key={user.id} className="users-list">
                     <Checkbox
                       checked={user.permission === null ? false : true}
-                      onChange={() => selectUsers(user.id,shareType)}
+                      disabled={user.permission === "OWNER"}
+                      onChange={() => selectUsers(user.id)}
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
-                    <p>{user.fullName}-{user.permission}</p>
+                    <span>{user.fullName}-{user.permission}</span>
                   </div>
-
                 ))}
               </DialogContent>
-              <DialogActions>
-                <Button onClick={() => { }} color="primary">
-                  Add
-                </Button>
-              </DialogActions>
             </Dialog>
           </div>
         );
