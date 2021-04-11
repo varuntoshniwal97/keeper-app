@@ -9,6 +9,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import { createNote } from "../actions/createNote"
 import { fetchNotes } from "../actions/fetchNotes"
+import { fetchUsersForNote } from "../actions/fetchUsersForNote"
 import { editNote as editNoteAction } from "../actions/editNote"
 import { deleteNote as deleteNoteAction } from "../actions/deleteNote"
 // import DialogContentText from "@material-ui/core/DialogContentText";
@@ -40,7 +41,9 @@ function App() {
       const res = await fetchNotes();
       console.log(res)
       setNotes(res.data.data)
+      return res
     }
+    fetchData().then()
   }, [])
 
   ////add note////
@@ -94,13 +97,16 @@ function App() {
     setMenuAnchor(null);
   }
 
-  function handleDialogBox(type) {
+  async function handleDialogBox(id,type) {
     if (openDialogBox) {
       setShareType("");
     } else {
       setShareType(type)
     }
     setOpenDialogBox(!openDialogBox);
+    console.log(id)
+    const res = await fetchUsersForNote(id)
+    console.log(res)
   }
 
   function selectUsers(id) {

@@ -88,3 +88,17 @@ export async function signUp(data) {
     }
 }
 
+export async function fetchUsersForNote(noteId) {
+    try {
+     let url = "/fetchUsers/" + noteId;
+     const response = await apiClient({
+      url: url,
+      method: "GET",
+     });
+   
+     return response;
+    } catch (error) {
+     throw error;
+    }
+}
+
