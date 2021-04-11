@@ -24,17 +24,8 @@ function App() {
   const [menuAnchorEl, setMenuAnchor] = useState(null);
   const [openDialogBox, setOpenDialogBox] = useState(false);
   const [shareType, setShareType] = useState("");
-  const [users, setUsers] = useState([
-    {
-      id: "0",
-      name: "Varun Toshniwal",
-      contributor: true,
-    }, {
-      id: "1",
-      name: "Kshitij Poojary",
-      contributor: false
-    }
-  ]);
+  const [concernedNoteId, setNoteId] = useState("");
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -55,6 +46,11 @@ function App() {
       return [...prevNotes, response.data.data];
     });
   }
+
+  function setNoteIdInState(id) {
+    setNoteId(id)
+  }
+
 
   ////delete note////
   async function deleteNote(id) {
@@ -105,17 +101,19 @@ function App() {
     }
     setOpenDialogBox(!openDialogBox);
     console.log(id)
-    const res = await fetchUsersForNote(id)
+    const res = await fetchUsersForNote(concernedNoteId)
+    setUsers(res.data.data)
     console.log(res)
   }
 
   function selectUsers(id) {
+    console.log(shareType )
     const userss = users;
     console.log(userss, id);
     const index = userss.findIndex(user => user.id === id);
     console.log(index)
     if (index > -1) {
-      userss[index].contributor = !userss[index].contributor;
+      userss[index].permission = !userss[index].contributor;
     }
     console.log(userss)
     setUsers(userss)
@@ -133,6 +131,7 @@ function App() {
         }
         return (
           <div>
+            <p>{concernedNoteId}</p>
             <Note
               key={index}
               id={noteItem.id}
@@ -144,6 +143,7 @@ function App() {
               onCloseMenu={onCloseMenu}
               onMenuItemClick={handleDialogBox}
               menuAnchorEl={menuAnchorEl}
+              setNoteId={setNoteIdInState}
             />
             <Dialog
               open={openDialogBox}
@@ -156,11 +156,11 @@ function App() {
                 {users.map(user => (
                   <div key={user.id} className="users-list">
                     <Checkbox
-                      checked={user.contributor}
-                      onChange={() => selectUsers(user.id)}
+                      checked={user.permission === null ? false : true}
+                      onChange={() => selectUsers(user.id,shareType)}
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
-                    <p>{user.name}</p>
+                    <p>{user.fullName}-{user.permission}</p>
                   </div>
 
                 ))}

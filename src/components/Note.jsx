@@ -6,7 +6,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 function Note(props) {
-  const [noteId, setNoteId] = useState("");
 
   function handleClick() {
     props.onDelete(props.id);
@@ -19,7 +18,7 @@ function Note(props) {
 
   function handleOpenMenu(event) {
     props.onMenuClick(props.id, event)
-    setNoteId(props.id)
+    props.setNoteId(props.id)
   }
 
   function handleCloseMenu() {
@@ -27,14 +26,14 @@ function Note(props) {
   }
 
    function handleMenuItem (type) {
-    console.log(noteId)
+    // console.log(noteId)
     props.onCloseMenu();
-    props.onMenuItemClick(props.id,type);
+    props.onMenuItemClick(type);
   }
 
   return (
     <div className="note">
-      <h1>{props.id}{noteId}</h1>
+      <h1>{props.id}</h1>
       <p>{props.content}</p>
       <button onClick={handleOpenMenu}>
         <MoreVertIcon />
