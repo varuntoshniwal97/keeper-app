@@ -45,9 +45,7 @@ function App() {
 
   ////add note////
   async function addNote(newNote) {
-
     const response = await createNote(newNote);
-    console.log(response)
     setNotes((prevNotes) => {
       return [...prevNotes, response.data.data];
     });
@@ -81,7 +79,6 @@ function App() {
         }
       );
     });
-    console.log("nk", id)
     editNoteAction(id, editNote)
   }
 
@@ -105,13 +102,10 @@ function App() {
 
   function selectUsers(id) {
     const userss = users;
-    console.log(userss, id);
     const index = userss.findIndex(user => user.id === id);
-    console.log(index)
     if (index > -1) {
       userss[index].contributor = !userss[index].contributor;
     }
-    console.log(userss)
     setUsers(userss)
   }
 
