@@ -35,15 +35,16 @@ function Note(props) {
     <div className="note">
       <h1>{props.title}</h1>
       <p>{props.content}</p>
-      <button onClick={handleOpenMenu}>
+      {props.permission === "OWNER" && <button onClick={handleOpenMenu}>
         <MoreVertIcon />
-      </button>
-      <button onClick={handleClick}>
+      </button>}
+      { props.permission === "OWNER" &&    <button onClick={handleClick}>
       <DeleteIcon /> 
-      </button>
-      <button onClick={handleEdit}>
-      <EditIcon /> 
-      </button>
+      </button>}
+      { (props.permission === "OWNER" || props.permission === "CONTRIBUTOR") &&    <button onClick={handleEdit}>
+    <EditIcon /> 
+    </button>}
+      <span style={{fontSize: "12px", backgroundColor:"#eebd38"}}>{props.permission}</span>
       <Menu
         id="simple-menu"
         anchorEl={props.menuAnchorEl}

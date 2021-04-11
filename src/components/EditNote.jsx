@@ -9,13 +9,17 @@ function EditNote(props) {
 
   const [note, setNote] = useState({
     title: "",
-    content: ""
+    content: "",
+    permission: "",
+    id:""
   });
 
   useEffect(() => {
     setNote({
       title: props.title,
-      content: props.content
+      content: props.content,
+      id: props.id,
+      permission:props.permission
     })
   }, [props])
 

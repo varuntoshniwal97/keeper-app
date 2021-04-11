@@ -42,6 +42,7 @@ function App() {
   async function addNote(newNote) {
     const response = await createNote(newNote);
     setNotes((prevNotes) => {
+      response.data.data.permission= "OWNER"
       return [...prevNotes, response.data.data];
     });
   }
@@ -112,7 +113,12 @@ function App() {
           userId: userss[index].id,
           permission: userss[index].permission
         }
-        await createPermission(params);
+        const res = await createPermission(params);
+        console.log(res,"RESULT")
+        userss[index] = {
+          ...userss[index],
+          permissionId:res.data.data.id
+        }
       }
     }
     console.log("users", userss[index]);
@@ -124,8 +130,8 @@ function App() {
       <Header />
       <CreateNote onAdd={addNote} />
       {notes.map((noteItem, index) => {
-        if (isEditable && noteItem.id === editIndex) {
-          return <EditNote id={noteItem.id} title={noteItem.title} content={noteItem.content} onAdd={editNote} />
+        if (isEditable && noteItem.id === editIndex  ) {
+          return <EditNote id={noteItem.id} title={noteItem.title} content={noteItem.content} permission={noteItem.permission} onAdd={editNote} />
         }
         return (
           <div>
@@ -141,6 +147,7 @@ function App() {
               onMenuItemClick={handleDialogBox}
               menuAnchorEl={menuAnchorEl}
               setNoteId={setNoteIdInState}
+              permission={noteItem.permission}
             />
             <Dialog
               open={openDialogBox}
@@ -154,11 +161,12 @@ function App() {
                   <div key={user.id} className="users-list">
                     <Checkbox
                       checked={user.permission === null ? false : true}
-                      disabled={user.permission === "OWNER"}
+                      disabled={user.permission === "OWNER" || (user.permission!== null && user.permission.toLowerCase()!= shareType)}
                       onChange={() => selectUsers(user.id)}
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
-                    <span>{user.fullName}-{user.permission}</span>
+                    <span>{user.fullName}</span>
+                    <span style={{}}>{user.permission && (`(${user.permission})`)}</span>
                   </div>
                 ))}
               </DialogContent>
