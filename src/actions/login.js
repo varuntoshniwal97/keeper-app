@@ -7,9 +7,8 @@ export async function login(params) {
   }
   const response = await loginAPI(request);
   localStorage.setItem("token", response.data.token);
-  return response;
+  return response.data.token;
  } catch (error) {
-  console.log(error);
   throw error;
  }
 }

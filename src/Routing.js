@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import "./App.css"
 import App from "./components/App";
 // import Header from './components/Header';
@@ -8,13 +8,20 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Redirect
+    Redirect,
 } from "react-router-dom";
 
 const Routing = () => {
-    const token = localStorage.getItem("token");
-    const isLoggedIn = token ? true : false;
-    console.log(isLoggedIn);
+    const [token, setToken] = useState(localStorage.getItem("token"));
+    useEffect(() => {
+        setToken(localStorage.getItem("token"));
+    }, []);
+    
+    function updateToken(token) {
+        setToken(token);
+    }
+
+    const isLoggedIn = !!token;
     return (
         <div>
             <Router>
@@ -22,8 +29,8 @@ const Routing = () => {
                     <Route exact path="/">
                         {isLoggedIn ? <App /> : <Redirect to="sign-in" />}
                     </Route>
-                    <Route exact path="/sign-up" component={Signup}></Route>
-                    <Route exact path="/sign-in" component={Login}></Route>
+                    <Route exact path="/sign-up" > <Signup updateToken={updateToken} /> </Route>
+                    <Route exact path="/sign-in" > <Login updateToken={updateToken} /> </Route>
                 </Switch>
             </Router>
         </div>

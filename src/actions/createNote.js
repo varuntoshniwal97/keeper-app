@@ -5,6 +5,5 @@ export async function createNote(params) {
         content: params.content
     }
     const response = await createNoteApi(request);
-    console.log(response)
     return response
 }   

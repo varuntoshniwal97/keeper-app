@@ -1,26 +1,19 @@
 import axios from "axios";
 // import { API } from "../constants";
 // import Storage from "../storage";
-const token = localStorage.getItem("token");
 const apiClient = axios.create({
   baseURL: "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",
-    "authorization": token
+    // "authorization": token
   },
 });
 
-// const data = "/createClass/:sellerId"
-
-// function addApiToken(config) {
-//   const sessionToken = "";
-//   config["headers"]["x-access-token"] = sessionToken;
-//   return config;
-// }
-
-// apiClient.interceptors.request.use(
-//   config => addApiToken(config),
-//   error => error,
-// );
+apiClient.interceptors.request.use(function (config) {
+  const token = localStorage.getItem("token");
+  config.headers.authorization =  token;
+  return config;
+}
+);
 
 export default apiClient;

@@ -1,9 +1,9 @@
-import React, {useState} from "react";
-import { useHistory } from "react-router";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { signUp } from "../actions/signUP";
 
-const Signup = () => {
+function Signup(props) {
   const history = useHistory();
   const [signUpDetails, setDetails] = useState({
     email: "",
@@ -22,7 +22,8 @@ const Signup = () => {
   }
 
   async function onSubmitFunction() {
-    await signUp(signUpDetails).then(() => {
+    await signUp(signUpDetails).then((token) => {
+      props.updateToken(token);
       history.push("/");
       setDetails({
         email: "",

@@ -1,7 +1,9 @@
 import React, { useState, } from "react";
-import { useHistory } from "react-router";
+import { useHistory, Link } from "react-router-dom";
 import { login } from "../actions/login";
-const Login = () => {
+// import Signup from "./Signup";
+
+function Login(props) {
   const history = useHistory();
   const [loginDetails, setDetails] = useState({
     email: "",
@@ -19,7 +21,8 @@ const Login = () => {
   }
 
   async function onSubmitFunction() {
-    await login(loginDetails).then(() => {
+    await login(loginDetails).then((token) => {
+      props.updateToken(token);
       history.push("/");
       setDetails({
         email: "",
@@ -34,7 +37,7 @@ const Login = () => {
       <div className="signupWidth">
         <div>
           <div className="mb-2 form-group">
-            <label for="email" className="form-label" style={{ color: "white" }}>
+            <label className="form-label" style={{ color: "white" }}>
               Email
             </label>
             <input
@@ -49,7 +52,7 @@ const Login = () => {
             />
           </div>
           <div className="mb-3 form-group">
-            <label for="password" className="form-label" style={{ color: "white" }}>
+            <label className="form-label" style={{ color: "white" }}>
               Password
             </label>
             <input
@@ -64,7 +67,7 @@ const Login = () => {
             />
           </div>
           <div className="form-group form-button">
-            <button
+            <input
               type="submit"
               name="signup"
               id="signup"
@@ -72,6 +75,7 @@ const Login = () => {
               onClick={onSubmitFunction}
             />
           </div>
+          <Link to="/sign-up" className="nav-link" style={{ color: "white" }}>Not a User? Register</Link>
         </div>
       </div>
     </div>

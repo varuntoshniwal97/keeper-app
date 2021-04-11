@@ -6,7 +6,7 @@ export async function createNote(params) {
   const response = await apiClient({
    url: url,
    method: "POST",
-   data: params
+   data: params,
   });
 
   return response;

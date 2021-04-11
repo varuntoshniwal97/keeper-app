@@ -38,9 +38,9 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       const res = await fetchNotes();
-      console.log(res)
       setNotes(res.data.data)
     }
+    fetchData().then().catch(error => console.log(error));
   }, [])
 
   ////add note////

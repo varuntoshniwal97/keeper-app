@@ -8,7 +8,7 @@ export async function signUp(params) {
   }
   const response = await signUpApi(request);
   localStorage.setItem("token", response.data.token);
-  return response;
+  return response.data.token;
  } catch (error) {
   throw error;
  }
