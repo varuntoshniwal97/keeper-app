@@ -1,9 +1,9 @@
 import React, { useState, } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { login } from "../actions/login";
-// import Signup from "./Signup";
+// import {Link} from "react-router-dom";
 
-function Login(props) {
+function Login (props) {
   const history = useHistory();
   const [loginDetails, setDetails] = useState({
     email: "",
@@ -11,6 +11,7 @@ function Login(props) {
   });
 
   function handleChange(event) {
+    // console.log(event.target)
     const { name, value } = event.target;
     setDetails(prevDetails => {
       return {
@@ -18,6 +19,7 @@ function Login(props) {
         [name]: value
       };
     });
+    
   }
 
   async function onSubmitFunction() {
@@ -67,15 +69,16 @@ function Login(props) {
             />
           </div>
           <div className="form-group form-button">
-            <input
+            <button
               type="submit"
-              name="signup"
-              id="signup"
+              name="login"
+              id="login"
               className="form-submit btn-primary btn-block form-control"
               onClick={onSubmitFunction}
-            />
+            > Login</button>
           </div>
-          <Link to="/sign-up" className="nav-link" style={{ color: "white" }}>Not a User? Register</Link>
+          <Link to="/sign-up" className="nav-link" style={{ color: "white" }}>Dont have an account? Go to Sign UP</Link>
+
         </div>
       </div>
     </div>
