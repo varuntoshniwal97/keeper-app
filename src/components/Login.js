@@ -33,7 +33,7 @@ function Login(props) {
 
   return (
     <div className="container signup">
-      <h1 style={{ textAlign: "center", color: "green" }}>Login</h1>
+      <h1 style={{ textAlign: "center", color: "#eebd38" }}>Login</h1>
       <div className="signupWidth">
         <div>
           <div className="mb-2 form-group">
@@ -73,6 +73,7 @@ function Login(props) {
               id="signup"
               className="form-submit btn-primary btn-block form-control"
               onClick={onSubmitFunction}
+              style={{backgroundColor: "#eebd38"}}
             />
           </div>
           <Link to="/sign-up" className="nav-link" style={{ color: "white" }}>Not a User? Register</Link>
